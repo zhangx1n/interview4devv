@@ -16,19 +16,19 @@ func TestConvertIPv4ToUint32(t *testing.T) {
 	}{
 		{name: "正确的 ip", args: args{ip: "172.168.5.1"}, want: 2896692481, wantErr: false},
 		{name: "数字前有空格", args: args{ip: "172. 168.5.1"}, want: 2896692481, wantErr: false},
-		{name: "数字间有空格", args: args{ip: "1 72.168.5.1"}, want: 0, wantErr: true},
+		{name: "数字内有空格", args: args{ip: "1 72.168.5.1"}, want: 0, wantErr: true},
 		{name: "数字前后都有空格", args: args{ip: "172.168.5. 1 "}, want: 2896692481, wantErr: false},
-		{name: "多种空格同时存在", args: args{ip: "172 . 168.    5.1"}, want: 2896692481, wantErr: false},
+		{name: "多个数字前后空格同时存在", args: args{ip: "172 . 168 .    5.1"}, want: 2896692481, wantErr: false},
 		{name: "0.0.0.0", args: args{ip: "0.0.0.0"}, want: 0, wantErr: false},
 		{name: "255.255.255.255", args: args{ip: "255.255.255.255"}, want: 4294967295, wantErr: false},
-		{name: "192.168.1.1", args: args{ip: "192.168.1.1"}, want: 3232235777, wantErr: false},
 		{name: "数字超出范围 256", args: args{ip: "172.168.5.256"}, want: 0, wantErr: true},
 		{name: "数字超出范围 -1", args: args{ip: "172.168.5.-1"}, want: 0, wantErr: true},
-		{name: "四个数字全超出范围", args: args{ip: "256.256.256.256"}, want: 0, wantErr: true},
 		{name: "数字为空", args: args{ip: "172.168..1"}, want: 0, wantErr: true},
-		{name: "数字以为字符", args: args{ip: "172.a.5.1"}, want: 0, wantErr: true},
-		{name: "多出.", args: args{ip: "172.168.5.1."}, want: 0, wantErr: true},
+		{name: "非数字的字符", args: args{ip: "172.a.5.1"}, want: 0, wantErr: true},
+		{name: "ip末尾多余.", args: args{ip: "172.168.5.1."}, want: 0, wantErr: true},
+		{name: "ip首端多余.", args: args{ip: ".172.168.5.1"}, want: 0, wantErr: true},
 		{name: "数字不足 4 个", args: args{ip: "172.168.5"}, want: 0, wantErr: true},
+		{name: "数字超出 4 个", args: args{ip: "172.168.5.1.1"}, want: 0, wantErr: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
