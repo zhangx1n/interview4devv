@@ -16,9 +16,10 @@ func TestConvertIPv4ToUint32(t *testing.T) {
 	}{
 		{name: "正确的 ip", args: args{ip: "172.168.5.1"}, want: 2896692481, wantErr: false},
 		{name: "数字前有空格", args: args{ip: "172. 168.5.1"}, want: 2896692481, wantErr: false},
+		{name: "数字后有空格", args: args{ip: "172.168 .5.1"}, want: 2896692481, wantErr: false},
 		{name: "数字内有空格", args: args{ip: "1 72.168.5.1"}, want: 0, wantErr: true},
 		{name: "数字前后都有空格", args: args{ip: "172.168.5. 1 "}, want: 2896692481, wantErr: false},
-		{name: "多个数字前后空格同时存在", args: args{ip: "172 . 168 .    5.1"}, want: 2896692481, wantErr: false},
+		{name: "多个数字前后多种空格同时存在", args: args{ip: "172 . 168 .    5.1"}, want: 2896692481, wantErr: false},
 		{name: "0.0.0.0", args: args{ip: "0.0.0.0"}, want: 0, wantErr: false},
 		{name: "255.255.255.255", args: args{ip: "255.255.255.255"}, want: 4294967295, wantErr: false},
 		{name: "数字超出范围 256", args: args{ip: "172.168.5.256"}, want: 0, wantErr: true},
